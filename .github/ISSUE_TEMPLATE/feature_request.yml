@@ -1,0 +1,57 @@
+name: Feature Request
+description: Propose an idea, widget, animation, or enhancement for NEXUS-DE
+title: "[FEATURE]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        We love new ideas and community-driven features! Share your suggestions below.
+
+  - type: dropdown
+    id: target_tier
+    attributes:
+      label: Target Tier
+      description: Which tier would this feature benefit most?
+      options:
+        - "All Tiers (Global DE Feature)"
+        - "Tier 1: Minimal (Focus on efficiency, lightness, speed)"
+        - "Tier 2: Core (Focus on workflow, widgets, daily ergonomics)"
+        - "Tier 3: Hyper (Focus on aesthetics, glass, dynamic effects)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: Is your feature request related to a problem or missing workflow?
+      placeholder: I find it difficult to manage...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Explain how you envision this feature working.
+      placeholder: NEXUS should provide a dedicated widget / gesture that...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative implementations or existing tools?
+      placeholder: Using external scripts like...
+    validations:
+      required: false
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Additional Context & Mockups
+      description: Add links, Figma mockups, or screenshots illustrating the idea.
+    validations:
+      required: false

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: GitHub Discussions & Community
+    url: https://github.com/Shyam-vadgama/Nexus-DE/discussions
+    about: Ask general questions, showcase desktop setups, or discuss ideas.
+  - name: Security Vulnerability Reporting
+    url: mailto:shyamvadgama80@gmail.com
+    about: Privately report security concerns as specified in SECURITY.md.

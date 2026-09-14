@@ -225,6 +225,43 @@ Widgets are **QML components** registered with `nexus-daemon`. Each widget is a 
 
 **Drag-and-drop:** Handled by Quickshell's `DragHandler` + `DropArea` in QML, positions persisted to `~/.config/nexus/widget-layout.json` via nexus-daemon.
 
+### 4.6 OTA Rolling Continuous Update Engine (`nexus-updater` / CI Gate)
+
+**Decision: Continuous Delivery directly into Settings App & Shell Notifications**
+
+Unlike traditional Linux DEs that require manual package manager upgrades or full OS upgrades, NEXUS-DE features an integrated **Over-The-Air (OTA) Rolling Update System**. When commits or pull requests are merged into `github.com/Shyam-vadgama/Nexus-DE`, desktop users are immediately notified.
+
+**CI Verification Gating Architecture:**
+```
+GitHub Repo (push/merge) ──► GitHub Actions CI (fmt, clippy, test)
+                                          │
+                   ┌──────────────────────┴──────────────────────┐
+                   ▼                                             ▼
+           [CI Checks PASS]                              [CI Checks FAIL / PENDING]
+                   │                                             │
+                   ▼                                             ▼
+     State: VerifiedStable                         State: UnverifiedRisk (Beta)
+     • Green "CI Verified" Badge                   • Amber Warning Icon
+     • Direct 1-Click Update                       • Warning Confirmation Dialog:
+     • Zero Risk Prompt                            • "This build has not passed automated
+                                                     tests. Updating now may cause desktop
+                                                     instability. Proceed at own risk."
+                                                   • Explicit user confirmation required
+```
+
+**Key Features:**
+1. **GitHub API Querying**: Daemon periodically queries `api.github.com/repos/Shyam-vadgama/Nexus-DE/commits/main` and `/commits/{sha}/check-runs` to evaluate build status without running third-party updater servers.
+2. **Settings Integration**: `nexus-settings` includes a dedicated **Updates** page with live changelog, commit author, CI test status badge, and update actions.
+3. **Atomic Swap & Rollback Protection**:
+   - Binaries are compiled/downloaded to a staging directory.
+   - Previous working binaries are saved to `~/.local/share/nexus/backups/`.
+   - If the new binary fails its `--test-run` health check on boot, the session automatically falls back to the previous stable release.
+4. **D-Bus API (`org.nexus.Updater`)**:
+   - `CheckForUpdates()` -> triggers async poll
+   - `GetUpdateStatus()` -> returns `{ available: bool, commit_sha: str, ci_passed: bool, message: str }`
+   - `ApplyUpdate(force_unverified: bool)` -> initiates update sequence
+   - `UpdateAvailable(status_json)` -> signal emitted to shell for banner notification
+
 ---
 
 ## 5. Complete Component Map
@@ -286,6 +323,7 @@ nexus-de/
 │   │   │   ├── wallpaper.rs
 │   │   │   ├── widgets.rs
 │   │   │   ├── keybindings.rs
+│   │   │   ├── updates.rs      # OTA update client & CI verification modal
 │   │   │   └── about.rs
 │   │   └── dbus_client.rs
 │   └── Cargo.toml
@@ -572,6 +610,7 @@ WantedBy=graphical-session.target
 - [ ] Desktop widget engine (drag/drop working)
 - [ ] Built-in widgets: Clock, Weather, System
 - [ ] nexus-settings app: appearance + wallpaper pages
+- [ ] OTA Rolling Continuous Updater: GitHub commit polling, CI verification gating, risk warning dialog
 - [ ] Material You color engine integrated
 - [ ] Tier 2 (Core) fully functional
 - [ ] AUR PKGBUILD published

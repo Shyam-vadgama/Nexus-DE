@@ -1,0 +1,85 @@
+name: Bug Report
+description: Report a reproducible bug or issue in NEXUS-DE
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting an issue in NEXUS-DE! Please fill out the sections below to help us investigate and resolve it promptly.
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: NEXUS Desktop Tier
+      description: Which operating tier were you running when the issue occurred?
+      options:
+        - "Tier 1: Minimal (Low RAM, no blur, high performance)"
+        - "Tier 2: Core (Daily driver, native blur, widgets)"
+        - "Tier 3: Hyper (Glassmorphism, shaders, live wallpaper)"
+        - "Not sure / Multiple"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of the unexpected behavior.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Provide step-by-step instructions to reproduce this problem.
+      placeholder: |
+        1. Boot NEXUS session via nexus-session
+        2. Open Settings and switch to Hyper tier
+        3. See error / unexpected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A description of what you expected to happen instead.
+      placeholder: The desktop should smoothly transition...
+    validations:
+      required: true
+
+  - type: textarea
+    id: system_info
+    attributes:
+      label: System Environment
+      description: Run `uname -a`, `hyprland --version`, and `nexus-daemon --version`.
+      render: shell
+      placeholder: |
+        - Linux Distro: [e.g. CachyOS / Arch / Fedora]
+        - Kernel: [e.g. 7.2.3]
+        - Hyprland: [e.g. 0.56.2]
+        - GPU & Driver: [e.g. AMD RX 6700 XT / NVIDIA 560]
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant Logs & Traces
+      description: Paste any output from `journalctl --user -u nexus-daemon` or terminal crashes.
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checks
+      options:
+        - label: I have searched existing issues and verified this is not a duplicate.
+          required: true
+        - label: I am running an up-to-date installation of NEXUS-DE.
+          required: true
