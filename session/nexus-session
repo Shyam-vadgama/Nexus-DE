@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# NEXUS-DE Wayland Session Entrypoint
+
+set -e
+
+export XDG_CURRENT_DESKTOP="NEXUS"
+export XDG_SESSION_DESKTOP="NEXUS"
+export XDG_SESSION_TYPE="wayland"
+export QT_QPA_PLATFORM="wayland;xcb"
+export GDK_BACKEND="wayland,x11"
+export CLUTTER_BACKEND="wayland"
+export SDL_VIDEODRIVER="wayland"
+
+# Ensure runtime directory is present
+if [ -z "$XDG_RUNTIME_DIR" ]; then
+    export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+fi
+
+echo "[NEXUS-SESSION] Initializing session environment..."
+
+# Start background daemon
+if command -v nexus-daemon >/dev/null 2>&1; then
+    nexus-daemon &
+fi
+
+# Launch Hyprland with NEXUS configuration
+exec Hyprland -c "${XDG_CONFIG_HOME:-$HOME/.config}/nexus/hyprland-active.conf"

@@ -1,0 +1,36 @@
+# Build Artifacts
+/target/
+build/
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+!CMakeLists.txt
+Makefile
+*.o
+*.so
+*.dylib
+*.a
+
+# Qt / QML Cache
+*.qmlc
+*.jsc
+.rcc/
+.qt/
+
+# User & Local Configs
+.env
+*.local
+local_config.toml
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary & Test Dirs
+scratch/
+/tmp/
+*.log

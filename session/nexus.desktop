@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=NEXUS Desktop
+Comment=Modern Wayland Desktop Environment powered by Hyprland and Quickshell
+Exec=/usr/bin/nexus-session
+TryExec=/usr/bin/nexus-session
+Type=Application
+DesktopNames=NEXUS
+Keywords=launch;Hyprland;wayland;desktop;nexus;

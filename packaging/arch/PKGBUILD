@@ -1,0 +1,51 @@
+# Maintainer: Shyam Vadgama <shyamvadgama80@gmail.com>
+pkgname=nexus-de
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Modern Wayland Desktop Environment built on Hyprland, Quickshell, and Rust"
+arch=('x86_64' 'aarch64')
+url="https://github.com/Shyam-vadgama/nexus-de"
+license=('GPL-3.0-or-later')
+depends=(
+    'hyprland'
+    'quickshell'
+    'gtk4'
+    'libadwaita'
+    'pipewire'
+    'wireplumber'
+)
+makedepends=(
+    'cargo'
+    'rust'
+    'git'
+    'pkg-config'
+)
+source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+prepare() {
+    export RUSTUP_TOOLCHAIN=stable
+    cargo fetch --locked --target "$(rustc -vV | sed -n 's/host: //p')"
+}
+
+build() {
+    export RUSTUP_TOOLCHAIN=stable
+    cargo build --frozen --release --all-targets
+}
+
+check() {
+    export RUSTUP_TOOLCHAIN=stable
+    cargo test --frozen --workspace
+}
+
+package() {
+    install -Dm755 target/release/nexus-daemon "$pkgdir/usr/bin/nexus-daemon"
+    install -Dm755 target/release/nexus-settings "$pkgdir/usr/bin/nexus-settings"
+    install -Dm755 session/nexus-session "$pkgdir/usr/bin/nexus-session"
+
+    install -Dm644 session/nexus.desktop "$pkgdir/usr/share/wayland-sessions/nexus.desktop"
+    install -Dm644 session/systemd/nexus-daemon.service "$pkgdir/usr/lib/systemd/user/nexus-daemon.service"
+
+    mkdir -p "$pkgdir/usr/share/nexus/shell"
+    cp -r shell/* "$pkgdir/usr/share/nexus/shell/"
+}

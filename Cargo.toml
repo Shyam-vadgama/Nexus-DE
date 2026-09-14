@@ -1,0 +1,47 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/nexus-core",
+    "crates/nexus-ipc",
+    "apps/nexus-daemon",
+    "apps/nexus-settings",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Shyam Vadgama <shyamvadgama80@gmail.com>"]
+license = "GPL-3.0-or-later"
+repository = "https://github.com/Shyam-vadgama/nexus-de"
+homepage = "https://github.com/Shyam-vadgama/nexus-de"
+
+[workspace.dependencies]
+# Internal workspace crates
+nexus-core = { path = "crates/nexus-core" }
+nexus-ipc = { path = "crates/nexus-ipc" }
+
+# Async runtime & D-Bus
+tokio = { version = "1.40", features = ["full"] }
+zbus = { version = "4.4", default-features = false, features = ["tokio"] }
+
+# Serialization & Config
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+
+# Logging & Errors
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+thiserror = "1.0"
+
+# Filesystem & System Metrics
+notify = "6.1"
+sysinfo = "0.31"
+
+# Color Science & Image Processing
+palette = { version = "0.7", default-features = false, features = ["std"] }
+image = { version = "0.25", default-features = false, features = ["png", "jpeg", "webp"] }
+
+# GTK4 & Adwaita UI
+gtk4 = "0.9"
+libadwaita = "0.7"
